@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="stylesheet" href="style.css">
+  <title>Frontend Mentor | Dictionary web app</title>
+</head>
+<body id="main">
+  <nav>      
+    <a href=""><img src="./assets/images/logo.svg" alt=""></a>
+    <div id="controller">
+      <div id="fontsection" class>
+          <button onclick="changeFont()" id="fonttype" class="dropbtn">Sans Serif</button>
+          <div id="FontDropdown" class="dropdown-content">
+          <p onclick="sansserif()">Sans Serif</p>
+          <p onclick="serif()">Serif</p>
+          <p onclick="mono()">Mono</p>
+        </div>
+        <img src="./assets/images/icon-arrow-down.svg"  onclick="changeFont()" alt="">
+      </div>
+      <div id="darkmode">
+        <label class="switch">
+          <input id="toggle" type="checkbox">
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <img src="./assets/images/icon-moon.svg" id="moon" alt="">
+    </div>
+      </nav>
+  <main>
+    <div id="searchsection">
+      <input type="text" id="vocab" name="vocab" placeholder="Seach for any word">
+      <img id="search" src="./assets/images/icon-search.svg" alt="">
+    </div>
+    <section id="words">
+      <div class="wordwrap">
+      <h2 id="displayword"></h2>
+      <p id="read"></p>
+    </div>
+      <div id="playsound"></div>
+    </section>
+    <section id="meanings">
+    </section>
+  </main>
+  <footer><p id="psource"></p></footer>
+  <script src="./script.js" defer></script>
+</body>
+</html>
