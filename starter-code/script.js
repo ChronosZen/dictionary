@@ -1,14 +1,15 @@
-let search = document.getElementById("search");
-let word = document.getElementById("words");
-let displayword = document.getElementById("displayword");
-let read = document.getElementById("read");
-let playsound = document.getElementById("playsound");
-let meanings_section = document.getElementById("meanings");
-let psource = document.getElementById("psource");
-let fonttype = document.getElementById("fonttype");
-let toggle = document.getElementById("toggle");
-let sound = {soundlink: ""};
-search.addEventListener ('click',  () => {
+const search = document.getElementById("search");
+const word = document.getElementById("words");
+const displayword = document.getElementById("displayword");
+const read = document.getElementById("read");
+const playsound = document.getElementById("playsound");
+const meanings_section = document.getElementById("meanings");
+const psource = document.getElementById("psource");
+const fonttype = document.getElementById("fonttype");
+const toggle = document.getElementById("toggle");
+let errormsg =  document.getElementById("errormsg");
+const sound = {soundlink: ""};
+search.addEventListener ('click',  async () => {
     let vocab =  document.getElementById("vocab");
     let apiURL = `https://api.dictionaryapi.dev/api/v2/entries/en/${vocab.value}`;
     displayword.innerHTML= "";
@@ -16,7 +17,13 @@ search.addEventListener ('click',  () => {
     meanings_section.innerHTML ="";
     psource.innerHTML= "";
     playsound.innerHTML ="";
-    getmeanings(apiURL);
+    if(vocab.value ==""){
+      document.getElementById("errormsg").classList.remove("error");
+    }
+    else{
+      document.getElementById("errormsg").classList.add("error");
+    await getmeanings(apiURL);
+    }
   });
 
 toggle.addEventListener('click', () =>{
@@ -29,7 +36,7 @@ toggle.addEventListener('click', () =>{
   async function getmeanings(apiURL){
     let respond = await fetch(apiURL);
     if (respond.status === 404) {
-      meanings_section.innerHTML = `<p>Sorry, the word you searched for could not be found.</p>`;
+      meanings_section.innerHTML = `<span class="notfound">☹️</span><h3 class="notfound">No Definitions Found</h3><p class="notfound">Sorry pal, we couldn't find definitions for the word you were looking for. You can try the search again at later time or head to the web instead..</p>`;
       return;
     }
     let data = await respond.json();
@@ -86,22 +93,23 @@ toggle.addEventListener('click', () =>{
   let source= document.createElement('a');
   source.href = data[0].sourceUrls[0];
   source.textContent = data[0].sourceUrls[0];
+  source.classList.add("link");
   psource.innerHTML= "Source ";
   psource.appendChild(source);
       for(let i = 0; i<data[0].phonetics.length;i++){
       if (data[0].phonetics[i].audio != "") {
           sound.soundlink = data[0].phonetics[i].audio;
         }}
-    console.log(data[0]);
-    console.log(data[0].meanings[0].partOfSpeech);
-    console.log(data[0].meanings[0].definitions[0].definition);
-    console.log(data[0].meanings[0].synonyms[0]);
-    console.log(data[0].phonetics[0].text);
-    console.log(data[0].phonetics[0].audio);
+    // console.log(data[0]);
+    // console.log(data[0].meanings[0].partOfSpeech);
+    // console.log(data[0].meanings[0].definitions[0].definition);
+    // console.log(data[0].meanings[0].synonyms[0]);
+    // console.log(data[0].phonetics[0].text);
+    // console.log(data[0].phonetics[0].audio);
     if(noun.length>0){
       meanings_section.innerHTML += `<div class="meanning">
       <h3 class="h3"><span>noun</span></h3>
-      <ul class="ul>Meaning`;     
+      <ul class="ul">Meaning`;     
     for(let k = 0; k<noun.length;k++){   
         meanings_section.innerHTML += `<li class="li">${noun[k]}</li>`;
     } 
@@ -162,14 +170,17 @@ function sansserif(){
   document.getElementById("main").style.fontFamily = "sans-serif";
   document.getElementById("FontDropdown").classList.remove("show");
   fonttype.textContent="Sans Serif";
+  document.getElementById("fonttype").style.fontFamily = "sans-serif";
 }
 function serif(){
   document.getElementById("main").style.fontFamily = "serif";
   document.getElementById("FontDropdown").classList.remove("show");
   fonttype.textContent="Serif";
+  document.getElementById("fonttype").style.fontFamily = "serif";
 }
 function mono(){
   document.getElementById("main").style.fontFamily = "monospace";
   document.getElementById("FontDropdown").classList.remove("show");
   fonttype.textContent="Mono";
+  document.getElementById("fonttype").style.fontFamily = "monospace";
 }

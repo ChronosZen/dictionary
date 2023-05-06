@@ -226,12 +226,41 @@ nav{
   text-indent: -.7em;
   list-style-type: none;
 }
-
+.li{
+  padding-left: 25px;
+}
 .li::before {
   content: "• ";
   color: #A445ED;
 }
+.link{
+  color:black;
+  padding-left: 30px;
+}
+#fonttype{
+  font-size: 1.1rem;
+}
 
+.redshow{
+  color: red;
+}
+
+.error{
+  display:none;
+}
+
+.notfound{
+  text-align: center;
+  display: block;
+  font-size: 1.2rem;
+}
+span.notfound{
+  font-size: 3rem;
+}
+p.notfound{
+  color:#757575;
+}
+/* Dark mode */
 .toggle {
   background-color: black;
   color: white;
@@ -252,3 +281,22 @@ nav{
   background-color: #1F1F1F;
   box-shadow: #A445ED  0px 0px 25px  ;
 }
+.toggle #vocab{
+  background-color: #1F1F1F;
+  color:white;
+}
+
+.toggle input::placeholder{
+  color:white;
+}
+.toggle .link{
+  color:white;
+}
+
+/* Tablet 768 px */
+@media screen and (min-width: 768px){
+  body{
+    max-width: 900px;
+}
+}
+

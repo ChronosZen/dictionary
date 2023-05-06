@@ -16,7 +16,7 @@
           <div id="FontDropdown" class="dropdown-content">
           <p onclick="sansserif()">Sans Serif</p>
           <p onclick="serif()">Serif</p>
-          <p onclick="mono()">Mono</p>
+          <p onclick="mono()" id="test3">Mono</p>
         </div>
         <img src="./assets/images/icon-arrow-down.svg"  onclick="changeFont()" alt="">
       </div>
@@ -34,6 +34,7 @@
       <input type="text" id="vocab" name="vocab" placeholder="Seach for any word">
       <img id="search" src="./assets/images/icon-search.svg" alt="">
     </div>
+    <p id="errormsg" class="error redshow">Whoops, can't be empty...</p>
     <section id="words">
       <div class="wordwrap">
       <h2 id="displayword"></h2>
