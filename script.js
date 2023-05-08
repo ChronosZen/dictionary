@@ -9,6 +9,19 @@ const fonttype = document.getElementById("fonttype");
 const toggle = document.getElementById("toggle");
 let errormsg =  document.getElementById("errormsg");
 const sound = {soundlink: ""};
+const fontclick = document.querySelectorAll('.dropdown-list');
+let checkfontclick = document.querySelector('#fontsection');
+// Listen for click events on body
+fontclick.forEach(fontlist => {
+  fontlist.addEventListener('click', (event) => {
+    document.getElementById("FontDropdown").classList.toggle("show");
+    if (checkfontclick.contains(event.target)) {
+      font = selectFont(event.target.textContent);
+      if(font !=""){
+      document.getElementById("main").style.fontFamily  = font;
+      fonttype.textContent = event.target.textContent;
+    }}
+  })});
 search.addEventListener ('click',  async () => {
     let vocab =  document.getElementById("vocab");
     let apiURL = `https://api.dictionaryapi.dev/api/v2/entries/en/${vocab.value}`;
@@ -22,20 +35,21 @@ search.addEventListener ('click',  async () => {
     }
     else{
       document.getElementById("errormsg").classList.add("error");
-    await getmeanings(apiURL);
+    await getmeanings(apiURL,vocab);
     }
   });
 
 toggle.addEventListener('click', () =>{
-
   let element = document.body;
   console.log(element)
   element.classList.toggle("toggle");
 })
 
-  async function getmeanings(apiURL){
+  async function getmeanings(apiURL,vocab){
     let respond = await fetch(apiURL);
+    console.log(vocab.value);
     if (respond.status === 404) {
+      document.getElementById("playsound").classList.add("hidden");
       meanings_section.innerHTML = `<span class="notfound">☹️</span><h3 class="notfound">No Definitions Found</h3><p class="notfound">Sorry pal, we couldn't find definitions for the word you were looking for. You can try the search again at later time or head to the web instead..</p>`;
       return;
     }
@@ -52,7 +66,9 @@ toggle.addEventListener('click', () =>{
     read.innerHTML = data[0].phonetic;
     
     // <img id="playsound" src="./assets/images/icon-play.svg" alt="">
-    playsound.innerHTML = '<img src="./assets/images/icon-play.svg" alt="" onclick ="phonetic()">'
+    if(vocab.value !=""){
+    document.getElementById("playsound").classList.remove("hidden");
+  }
     for(let i = 0; i<data[0].meanings.length;i++){
       switch (data[0].meanings[i].partOfSpeech){
         case "noun":
@@ -88,7 +104,6 @@ toggle.addEventListener('click', () =>{
            }  
           break;
       }
-
   }
   let source= document.createElement('a');
   source.href = data[0].sourceUrls[0];
@@ -98,14 +113,8 @@ toggle.addEventListener('click', () =>{
   psource.appendChild(source);
       for(let i = 0; i<data[0].phonetics.length;i++){
       if (data[0].phonetics[i].audio != "") {
-          sound.soundlink = data[0].phonetics[i].audio;
+          sound.soundlink = new Audio(data[0].phonetics[i].audio);
         }}
-    // console.log(data[0]);
-    // console.log(data[0].meanings[0].partOfSpeech);
-    // console.log(data[0].meanings[0].definitions[0].definition);
-    // console.log(data[0].meanings[0].synonyms[0]);
-    // console.log(data[0].phonetics[0].text);
-    // console.log(data[0].phonetics[0].audio);
     if(noun.length>0){
       meanings_section.innerHTML += `<div class="meanning">
       <h3 class="h3"><span>noun</span></h3>
@@ -159,28 +168,20 @@ toggle.addEventListener('click', () =>{
       <p class="ul">Synonyms <span class="span">${advsyn.slice(0, -2)}</span></div>`}
      }
 }
-function phonetic(){
- let audio = new Audio(sound.soundlink);
- audio.play();
-}
-function changeFont(){
-  document.getElementById("FontDropdown").classList.toggle("show");
-}
-function sansserif(){
-  document.getElementById("main").style.fontFamily = "sans-serif";
-  document.getElementById("FontDropdown").classList.remove("show");
-  fonttype.textContent="Sans Serif";
-  document.getElementById("fonttype").style.fontFamily = "sans-serif";
-}
-function serif(){
-  document.getElementById("main").style.fontFamily = "serif";
-  document.getElementById("FontDropdown").classList.remove("show");
-  fonttype.textContent="Serif";
-  document.getElementById("fonttype").style.fontFamily = "serif";
-}
-function mono(){
-  document.getElementById("main").style.fontFamily = "monospace";
-  document.getElementById("FontDropdown").classList.remove("show");
-  fonttype.textContent="Mono";
-  document.getElementById("fonttype").style.fontFamily = "monospace";
+playsound.addEventListener ('click', () => {
+  sound.soundlink.play();
+})
+function selectFont(font) {
+  switch(font) {
+    case "Sans Serif":
+      font = "sans-serif";
+      break;
+    case "Serif":
+      font = "serif";
+      break;
+    case "Mono":
+      font = "monospace";
+      break;
+  }
+  return font;
 }

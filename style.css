@@ -50,6 +50,9 @@ button{
     margin-top: 15px;
 
 }
+.hidden{
+  display: none;
+}
 input{
     font-size: 16px;
 }
@@ -266,7 +269,7 @@ p.notfound{
   color: white;
 }
 .toggle #moon{
-  color: #A445ED;
+  filter: invert(33%) sepia(57%) saturate(4166%) hue-rotate(258deg) brightness(97%) contrast(91%);
 }
 
 .toggle .h3 span{
